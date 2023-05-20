@@ -3,7 +3,6 @@ package com.theta.ThetaVideoApiBulkUpload.controller;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.theta.ThetaVideoApiBulkUpload.Service.ThetaVideoService;
 import com.theta.ThetaVideoApiBulkUpload.apiModels.ProcessedVideoResponse;
-import com.theta.ThetaVideoApiBulkUpload.apiModels.Video;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @RestController
 public class BulkUploadController {
