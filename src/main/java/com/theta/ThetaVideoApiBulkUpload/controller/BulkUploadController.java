@@ -40,7 +40,6 @@ public class BulkUploadController {
             thetaVideoService.processBulkUploadAsync(listOfFilesBytes,thetaApiKey,thetaApiSecret,webhookUrl);
             processedVideoResponse.setStatus("success");
             processedVideoResponse.setMessage("Operation In Progress, You will get the final response on your webhook");
-            return processedVideoResponse;
         }else{
             var checkVideoUploadResponses = thetaVideoService.processBulkUpload(listOfFilesBytes,thetaApiKey,thetaApiSecret);
             processedVideoResponse = thetaVideoService.compileProcessedVideoResponse(checkVideoUploadResponses);
