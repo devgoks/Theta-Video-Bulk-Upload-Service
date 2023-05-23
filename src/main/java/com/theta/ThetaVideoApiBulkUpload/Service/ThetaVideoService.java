@@ -93,7 +93,7 @@ public class ThetaVideoService {
     }
 
 
-    public CheckVideoUploadResponse combinedVideoUploadProcess(byte[] file, String thetaApiKey, String thetaApiSecret) throws UnirestException, IOException, InterruptedException {
+    public CheckVideoUploadResponse combinedVideoUploadProcess(byte[] file, String thetaApiKey, String thetaApiSecret) throws UnirestException, InterruptedException {
         var createPreSignedUrlResponse = createPreSignedUrlResponse(thetaApiKey, thetaApiSecret);
         String presignedUrl = createPreSignedUrlResponse.getBody().getUploads().get(0).getPresignedUrl();
         String sourceVideoId = createPreSignedUrlResponse.getBody().getUploads().get(0).getId();
@@ -112,7 +112,7 @@ public class ThetaVideoService {
                 headers,null,CreatePreSignedUrlResponse.class);
     }
 
-    public void uploadFileToPreSignedUrl(byte[] file, String preSignedUrl) throws IOException, UnirestException {
+    public void uploadFileToPreSignedUrl(byte[] file, String preSignedUrl) throws UnirestException {
         LocalDateTime startTime = LocalDateTime.now();
         System.out.println("Upload File To PreSignedUrl Start Time: " + formatDateTime(startTime));
         Unirest.setTimeouts(0, 0);
