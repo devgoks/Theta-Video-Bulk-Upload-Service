@@ -1,5 +1,6 @@
 package com.theta.ThetaVideoApiBulkUpload.thetaRestClient;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
+@Slf4j
 public class ThetaRestClient {
 
     private static final RestTemplate restTemplate = new RestTemplate();
@@ -16,10 +18,10 @@ public class ThetaRestClient {
         var entity = new HttpEntity<>(requestObject, headers);
         var responseEntity = restTemplate.postForEntity(url, entity, responseType);
 
-        System.out.println("Response HTTP Status Code: " + responseEntity.getStatusCodeValue());
-        System.out.println("Response Headers: " + responseEntity.getHeaders());
+        log.info("Response HTTP Status Code: " + responseEntity.getStatusCodeValue());
+        log.info("Response Headers: " + responseEntity.getHeaders());
         if(responseEntity.getBody() != null)
-            System.out.println("Response Body: " + responseEntity.getBody().toString());
+            log.info("Response Body: " + responseEntity.getBody().toString());
         return responseEntity.getBody();
     }
 
@@ -27,10 +29,10 @@ public class ThetaRestClient {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
         var responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType);
-        System.out.println("Response HTTP Status Code: " + responseEntity.getStatusCodeValue());
-        System.out.println("Response Headers: " + responseEntity.getHeaders());
+        log.info("Response HTTP Status Code: " + responseEntity.getStatusCodeValue());
+        log.info("Response Headers: " + responseEntity.getHeaders());
         if(responseEntity.getBody() != null)
-            System.out.println("Response Body: " + responseEntity.getBody().toString());
+            log.info("Response Body: " + responseEntity.getBody().toString());
         return responseEntity.getBody();
     }
 

@@ -5,6 +5,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.theta.ThetaVideoApiBulkUpload.apiModels.*;
 import com.theta.ThetaVideoApiBulkUpload.thetaRestClient.ThetaRestClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
@@ -22,6 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ThetaVideoService {
     // Number of threads to execute concurrently
     //Also, theta video transcode service has a limit of 3 video transcoding at a time
@@ -82,7 +84,7 @@ public class ThetaVideoService {
         // Process the resultList as needed
         resultListFuture.thenAccept(resultList -> {
             for (CheckVideoUploadResponse result : resultList) {
-                System.out.println("Result: " + result.toString());
+                log.info("Result: " + result.toString());
             }
         });
 
@@ -114,7 +116,7 @@ public class ThetaVideoService {
 
     public void uploadFileToPreSignedUrl(byte[] file, String preSignedUrl) throws UnirestException {
         LocalDateTime startTime = LocalDateTime.now();
-        System.out.println("Upload File To PreSignedUrl Start Time: " + formatDateTime(startTime));
+        log.info("Upload File To PreSignedUrl Start Time: " + formatDateTime(startTime));
         Unirest.setTimeouts(0, 0);
         HttpResponse<String> response = Unirest.put(preSignedUrl)
                 .header("Content-Type", "application/octet-stream")
@@ -122,7 +124,7 @@ public class ThetaVideoService {
                 .asString();
         response.getBody();
         LocalDateTime endTime = LocalDateTime.now();
-        System.out.println("Upload File To PreSignedUrl End Time: " + formatDateTime(endTime));
+        log.info("Upload File To PreSignedUrl End Time: " + formatDateTime(endTime));
     }
 
     private String formatDateTime(LocalDateTime dateTime) {

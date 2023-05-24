@@ -25,7 +25,7 @@ public class BulkUploadController {
         this.thetaVideoServiceMock = thetaVideoServiceMock;
     }
 
-    @PostMapping("/theta/bulkupload")
+    @PostMapping(value={"/theta/bulkupload","/theta/bulkupload/main"})
     public Object thetaBulkUpload(@RequestPart("files") MultipartFile[] files,
                                              @RequestPart("theta-api-key") String thetaApiKey,
                                              @RequestPart("theta-api-secret") String thetaApiSecret,
@@ -51,7 +51,7 @@ public class BulkUploadController {
     }
 
 
-    @PostMapping(path="/theta/bulkupload/main", produces="application/json")
+    @PostMapping(path="/theta/bulkupload/mock", produces="application/json")
     public Object thetaBulkUploadMock(@RequestPart("files") MultipartFile[] files,
                                              @RequestPart("theta-api-key") String thetaApiKey,
                                              @RequestPart("theta-api-secret") String thetaApiSecret,
