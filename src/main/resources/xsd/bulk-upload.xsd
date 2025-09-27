@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://theta.com/bulkupload"
+           xmlns="http://theta.com/bulkupload"
+           elementFormDefault="qualified">
+
+    <xs:element name="BulkUploadRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="files" type="xs:base64Binary" maxOccurs="unbounded"/>
+                <xs:element name="thetaApiKey" type="xs:string"/>
+                <xs:element name="thetaApiSecret" type="xs:string"/>
+                <xs:element name="asyncFlow" type="xs:boolean"/>
+                <xs:element name="webhookUrl" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="BulkUploadResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="xs:string"/>
+                <xs:element name="message" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
