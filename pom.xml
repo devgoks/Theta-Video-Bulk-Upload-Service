@@ -44,6 +44,30 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.14.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<schemaDirectory>${project.basedir}/src/main/resources/xsd</schemaDirectory>
+					<generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+					<schemas>
+						<schema>
+							<files>
+								<file>bulk-upload.xsd</file>
+							</files>
+						</schema>
+					</schemas>
+					<packageName>com.theta.ThetaVideoApiBulkUpload.soap.gen</packageName>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<repositories>
