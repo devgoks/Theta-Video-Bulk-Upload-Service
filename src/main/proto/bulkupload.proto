@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package com.theta.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.theta.ThetaVideoApiBulkUpload.grpc";
+option java_outer_classname = "BulkUploadProto";
+
+service BulkUploadService {
+  rpc ProcessBulkUpload (BulkUploadRequest) returns (ProcessedVideoResponse) {}
+  rpc ProcessBulkUploadAsync (BulkUploadRequest) returns (OperationStarted) {}
+}
+
+message BulkUploadRequest {
+  repeated bytes files = 1;
+  string theta_api_key = 2;
+  string theta_api_secret = 3;
+  string webhook_url = 4; // optional for async
+}
+
+message Video {
+  string id = 1;
+  string playback_uri = 2;
+  string player_uri = 3;
+  string use_drm = 4;
+  string duration = 5;
+  string create_time = 6;
+  string update_time = 7;
+  string service_account_id = 8;
+  string file_name = 9;
+  string state = 10;
+  string sub_state = 11;
+  string source_upload_id = 12;
+  string source_uri = 13;
+  string playback_policy = 14;
+  int32 progress = 15;
+  string error = 16;
+  string resolution = 17;
+  string start_time_override = 18;
+}
+
+message ProcessedVideoResponse {
+  string status = 1;
+  string message = 2;
+  repeated Video data = 3; // maps to JSON "data"
+}
+
+message OperationStarted {
+  string status = 1;
+  string message = 2;
+}
+
+
