@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,14 +29,29 @@ public class ThetaVideoService {
     // per theta apiKey and theta api-secret
     private final static int Number_OF_Threads = 3;
 
+    private final BulkUploadProducer bulkUploadProducer;
+    private final UploadResultAggregator uploadResultAggregator;
+
+    public ThetaVideoService(BulkUploadProducer bulkUploadProducer, UploadResultAggregator uploadResultAggregator){
+        this.bulkUploadProducer = bulkUploadProducer;
+        this.uploadResultAggregator = uploadResultAggregator;
+    }
+
     @Async
     public void processBulkUploadAsync(List<byte[]> files, String thetaApiKey,
-                                        String thetaApiSecret, String webhookUrl) throws ExecutionException, InterruptedException {
-        var checkVideoUploadResponses = processBulkUpload(files,thetaApiKey,thetaApiSecret);
-        var processedVideoResponse = compileProcessedVideoResponse(checkVideoUploadResponses);
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ThetaRestClient.sendPostRequest(webhookUrl, headers,processedVideoResponse,Void.class);
+                                        String thetaApiSecret, String webhookUrl) {
+        String batchId = java.util.UUID.randomUUID().toString();
+        uploadResultAggregator.initBatch(batchId, files.size(), webhookUrl);
+        for (byte[] file : files) {
+            var message = com.theta.ThetaVideoApiBulkUpload.apiModels.UploadJobMessage.builder()
+                    .batchId(batchId)
+                    .fileBytes(file)
+                    .thetaApiKey(thetaApiKey)
+                    .thetaApiSecret(thetaApiSecret)
+                    .webhookUrl(webhookUrl)
+                    .build();
+            bulkUploadProducer.sendUploadJob(message);
+        }
     }
 
     public ProcessedVideoResponse compileProcessedVideoResponse(List<CheckVideoUploadResponse> checkVideoUploadResponses){
