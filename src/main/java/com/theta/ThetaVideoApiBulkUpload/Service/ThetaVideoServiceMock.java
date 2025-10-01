@@ -19,4 +19,17 @@ public class ThetaVideoServiceMock {
         headers.setContentType(MediaType.APPLICATION_JSON);
         ThetaRestClient.sendPostRequest(webhookUrl, headers,mockedResponse(),Void.class);
     }
+
+    // Single upload mock methods
+    public String mockedSingleResponse (){
+        return "{\"status\":\"success\",\"message\":\"Operation Successful\",\"data\":[{\"id\":\"video_gy7e01nv71empt4ayi7chvn9v9\",\"duration\":\"30526\",\"state\":\"success\",\"progress\":100,\"error\":null,\"resolution\":null,\"metadata\":{},\"playback_uri\":\"https://media.thetavideoapi.com/video_gy7e01nv71empt4ayi7chvn9v9/master.m3u8\",\"player_uri\":\"https://player.thetavideoapi.com/video/video_gy7e01nv71empt4ayi7chvn9v9\",\"use_drm\":null,\"create_time\":\"2023-05-18T13:53:50.270Z\",\"update_time\":\"2023-05-18T13:54:32.812Z\",\"service_account_id\":\"srvacc_cc55yrv86dh8x5n2wygu4ipm1\",\"file_name\":null,\"sub_state\":\"none\",\"source_upload_id\":\"upload_3huf1smf3vebmu1g3s2vqxfgr\",\"source_uri\":null,\"playback_policy\":\"public\",\"start_time_override\":null}]}";
+    }
+
+    @Async
+    public void mockedSingleAsyncFlow(String webhookUrl) throws InterruptedException {
+        Thread.sleep(30000);
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ThetaRestClient.sendPostRequest(webhookUrl, headers, mockedSingleResponse(), Void.class);
+    }
 }

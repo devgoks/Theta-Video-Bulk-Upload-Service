@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -165,5 +164,30 @@ public class ThetaVideoService {
             Thread.sleep(10000);
         }
         return checkVideoUploadResponse;
+    }
+
+    // Single upload methods
+    @Async
+    public void processSingleUploadAsync(byte[] file, String thetaApiKey,
+                                        String thetaApiSecret, String webhookUrl) throws ExecutionException, InterruptedException, UnirestException {
+        var checkVideoUploadResponse = processSingleUpload(file, thetaApiKey, thetaApiSecret);
+        var processedVideoResponse = compileSingleProcessedVideoResponse(checkVideoUploadResponse);
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ThetaRestClient.sendPostRequest(webhookUrl, headers, processedVideoResponse, Void.class);
+    }
+
+    public ProcessedVideoResponse compileSingleProcessedVideoResponse(CheckVideoUploadResponse checkVideoUploadResponse){
+        var processedVideoResponse = new ProcessedVideoResponse();
+        processedVideoResponse.setStatus("success");
+        processedVideoResponse.setMessage("Operation Successful");
+        List<Video> videos = List.of(checkVideoUploadResponse.getBody().getVideos().get(0));
+        processedVideoResponse.setVideos(videos);
+        return processedVideoResponse;
+    }
+
+    public CheckVideoUploadResponse processSingleUpload(byte[] file, String thetaApiKey,
+                                                       String thetaApiSecret) throws ExecutionException, InterruptedException, UnirestException {
+        return combinedVideoUploadProcess(file, thetaApiKey, thetaApiSecret);
     }
 }
